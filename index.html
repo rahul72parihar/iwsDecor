@@ -54,30 +54,40 @@
 
       </nav>
 
-      <!-- NAV MEGA MENU (hover) -->
-      <div class="nav-mega" id="navMega" role="menu" aria-hidden="true">
+      <!-- NAV MEGA MENU -->
+      <!-- <div class="nav-mega" id="navMega" role="menu" aria-hidden="true">
+
         <div class="nav-mega-inner">
 
           <div class="nav-mega-left">
-            <h3 class="nav-mega-title" id="navMegaTitle">Categories</h3>
-            <p class="nav-mega-subtitle">Browse subcategories</p>
+
+            <h3 class="nav-mega-title" id="navMegaTitle">
+              Categories
+            </h3>
+
+            <p class="nav-mega-subtitle">
+              Browse subcategories
+            </p>
+
           </div>
 
           <div class="nav-mega-right">
+
             <input
               type="text"
               id="navMegaSearch"
               class="nav-mega-search"
               placeholder="Search subcategories..."
             >
+
           </div>
 
           <div class="nav-mega-columns" id="navMegaColumns">
-            <!-- populated by JS -->
           </div>
-        </div>
-      </div>
 
+        </div>
+
+      </div> -->
 
       <!-- LOGO -->
       <a href="#" class="logo">
@@ -167,6 +177,25 @@
 
     </div>
 
+    <!-- FLOATING BADGE -->
+    <div class="hero-badge">
+
+      <div class="hero-badge-line"></div>
+
+      <div>
+
+        <p class="hero-badge-title">
+          Premium Material
+        </p>
+
+        <p class="hero-badge-text">
+          Handmade luxury decor crafted with timeless elegance and premium brass finishes.
+        </p>
+
+      </div>
+
+    </div>
+
   </section>
 
   <!-- MARQUEE -->
@@ -216,7 +245,6 @@
 
     <div class="categories-grid">
 
-      <!-- CATEGORY -->
       <a href="#" class="cat-card">
 
         <div
@@ -238,7 +266,6 @@
 
       </a>
 
-      <!-- CATEGORY -->
       <a href="#" class="cat-card">
 
         <div
@@ -260,7 +287,6 @@
 
       </a>
 
-      <!-- CATEGORY -->
       <a href="#" class="cat-card">
 
         <div
@@ -996,6 +1022,7 @@
 
   </footer>
 
+
   <!-- JS -->
   <script>
 
@@ -1007,32 +1034,6 @@
         'scrolled',
         window.scrollY > 40
       );
-
-    });
-
-    document.querySelectorAll('.wishlist-btn').forEach(btn => {
-
-      btn.addEventListener('click', () => {
-
-        btn.classList.toggle('wishlisted');
-
-      });
-
-    });
-
-    document.querySelectorAll('.add-cart-btn').forEach(btn => {
-
-      btn.addEventListener('click', function(){
-
-        this.innerText = 'Added ✓';
-
-        setTimeout(() => {
-
-          this.innerText = 'Add to Cart';
-
-        },1500);
-
-      });
 
     });
 
@@ -1061,9 +1062,10 @@
     };
 
     function renderMegaMenu(){
+
       const columns = Object.entries(categoryToSubcategories)
         .map(([cat, subs]) => {
-          const safeCat = cat;
+
           const links = subs
             .map(sub => {
               return `<a href="#" class="nav-mega-link">${sub}</a>`;
@@ -1071,8 +1073,8 @@
             .join('');
 
           return `
-            <div class="nav-mega-col" aria-label="${safeCat}">
-              <div class="nav-mega-col-title">${safeCat}</div>
+            <div class="nav-mega-col">
+              <div class="nav-mega-col-title">${cat}</div>
               <div class="nav-mega-links">${links}</div>
             </div>
           `;
@@ -1080,74 +1082,51 @@
         .join('');
 
       megaColumns.innerHTML = columns;
+
     }
 
     function openMegaMenu(){
       megaMenu.classList.add('show');
-      megaMenu.setAttribute('aria-hidden','false');
     }
 
     function closeMegaMenu(){
       megaMenu.classList.remove('show');
-      megaMenu.setAttribute('aria-hidden','true');
-      megaSearch.value = '';
-      megaSearch.dispatchEvent(new Event('input'));
     }
 
     renderMegaMenu();
 
-    // Hover open from triggers
     document.querySelectorAll('.category-trigger').forEach(link => {
-      link.addEventListener('mouseenter', () => openMegaMenu());
+
+      link.addEventListener('mouseenter', () => {
+        openMegaMenu();
+      });
+
     });
 
-    // Keep open while hovering menu
     megaMenu.addEventListener('mouseleave', () => {
-      setTimeout(() => {
-        if(!megaMenu.matches(':hover')) closeMegaMenu();
-      }, 120);
+      closeMegaMenu();
     });
 
-    // Close on Escape
-    window.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape') closeMegaMenu();
-    });
-
-    // Search filter (client side)
     megaSearch.addEventListener('input', () => {
+
       const q = megaSearch.value.trim().toLowerCase();
-      const allLinks = Array.from(megaColumns.querySelectorAll('.nav-mega-link'));
+
+      const allLinks = Array.from(
+        megaColumns.querySelectorAll('.nav-mega-link')
+      );
+
       allLinks.forEach(a => {
+
         const text = a.textContent.toLowerCase();
-        a.style.display = (!q || text.includes(q)) ? 'block' : 'none';
+
+        a.style.display =
+          (!q || text.includes(q))
+          ? 'block'
+          : 'none';
+
       });
+
     });
-
-    /* VIDEO AUTO SCROLL */
-
-    const carousel = document.querySelector('.video-carousel');
-
-
-    let scrollAmount = 0;
-
-    setInterval(() => {
-
-      scrollAmount += 300;
-
-      if(scrollAmount >= carousel.scrollWidth - carousel.clientWidth){
-
-        scrollAmount = 0;
-
-      }
-
-      carousel.scrollTo({
-
-        left: scrollAmount,
-        behavior: 'smooth'
-
-      });
-
-    },3500);
 
   </script>
 
