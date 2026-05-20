@@ -38,21 +38,46 @@
       </button>
 
       <!-- LEFT NAV -->
-      <nav class="header-left">
+      <nav class="header-left" id="categoriesNav">
 
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link category-trigger" data-category="Chandeliers">
           Chandeliers
         </a>
 
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link category-trigger" data-category="Wall Lights">
           Wall Lights
         </a>
 
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link category-trigger" data-category="Pendant Lights">
           Pendant Lights
         </a>
 
       </nav>
+
+      <!-- NAV MEGA MENU (hover) -->
+      <div class="nav-mega" id="navMega" role="menu" aria-hidden="true">
+        <div class="nav-mega-inner">
+
+          <div class="nav-mega-left">
+            <h3 class="nav-mega-title" id="navMegaTitle">Categories</h3>
+            <p class="nav-mega-subtitle">Browse subcategories</p>
+          </div>
+
+          <div class="nav-mega-right">
+            <input
+              type="text"
+              id="navMegaSearch"
+              class="nav-mega-search"
+              placeholder="Search subcategories..."
+            >
+          </div>
+
+          <div class="nav-mega-columns" id="navMegaColumns">
+            <!-- populated by JS -->
+          </div>
+        </div>
+      </div>
+
 
       <!-- LOGO -->
       <a href="#" class="logo">
@@ -1011,9 +1036,97 @@
 
     });
 
+    /* NAV MEGA MENU */
+
+    const megaMenu = document.getElementById('navMega');
+    const megaColumns = document.getElementById('navMegaColumns');
+    const megaSearch = document.getElementById('navMegaSearch');
+
+    const categoryToSubcategories = {
+      "Chandeliers": [
+        "Crystal Chandeliers",
+        "Brass Chandeliers",
+        "Modern Chandeliers"
+      ],
+      "Wall Lights": [
+        "Brass Wall Sconces",
+        "Outdoor Wall Lights",
+        "Reading Wall Lights"
+      ],
+      "Pendant Lights": [
+        "Hanging Pendants",
+        "Glass Pendant Lights",
+        "Ceiling Pendants"
+      ]
+    };
+
+    function renderMegaMenu(){
+      const columns = Object.entries(categoryToSubcategories)
+        .map(([cat, subs]) => {
+          const safeCat = cat;
+          const links = subs
+            .map(sub => {
+              return `<a href="#" class="nav-mega-link">${sub}</a>`;
+            })
+            .join('');
+
+          return `
+            <div class="nav-mega-col" aria-label="${safeCat}">
+              <div class="nav-mega-col-title">${safeCat}</div>
+              <div class="nav-mega-links">${links}</div>
+            </div>
+          `;
+        })
+        .join('');
+
+      megaColumns.innerHTML = columns;
+    }
+
+    function openMegaMenu(){
+      megaMenu.classList.add('show');
+      megaMenu.setAttribute('aria-hidden','false');
+    }
+
+    function closeMegaMenu(){
+      megaMenu.classList.remove('show');
+      megaMenu.setAttribute('aria-hidden','true');
+      megaSearch.value = '';
+      megaSearch.dispatchEvent(new Event('input'));
+    }
+
+    renderMegaMenu();
+
+    // Hover open from triggers
+    document.querySelectorAll('.category-trigger').forEach(link => {
+      link.addEventListener('mouseenter', () => openMegaMenu());
+    });
+
+    // Keep open while hovering menu
+    megaMenu.addEventListener('mouseleave', () => {
+      setTimeout(() => {
+        if(!megaMenu.matches(':hover')) closeMegaMenu();
+      }, 120);
+    });
+
+    // Close on Escape
+    window.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') closeMegaMenu();
+    });
+
+    // Search filter (client side)
+    megaSearch.addEventListener('input', () => {
+      const q = megaSearch.value.trim().toLowerCase();
+      const allLinks = Array.from(megaColumns.querySelectorAll('.nav-mega-link'));
+      allLinks.forEach(a => {
+        const text = a.textContent.toLowerCase();
+        a.style.display = (!q || text.includes(q)) ? 'block' : 'none';
+      });
+    });
+
     /* VIDEO AUTO SCROLL */
 
     const carousel = document.querySelector('.video-carousel');
+
 
     let scrollAmount = 0;
 

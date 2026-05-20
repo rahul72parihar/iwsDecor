@@ -234,6 +234,129 @@ button{
 }
 
 /* =========================
+   NAV MEGA MENU
+========================= */
+
+.header{
+  position:sticky;
+}
+
+.nav-mega{
+  position:absolute;
+  top:84px;
+  left:0;
+  right:0;
+  background:white;
+  border-radius:0 0 28px 28px;
+  box-shadow:0 20px 70px rgba(0,0,0,0.16);
+  z-index:1000;
+  opacity:0;
+  transform:translateY(-10px);
+  pointer-events:none;
+  transition:opacity .18s ease, transform .22s ease;
+}
+
+.nav-mega.show{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+
+.nav-mega-inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:26px 5%;
+  display:grid;
+  grid-template-columns:1fr 360px;
+  gap:28px;
+}
+
+.nav-mega-left{
+  grid-column:1;
+  align-self:start;
+}
+
+.nav-mega-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:34px;
+  margin-bottom:6px;
+}
+
+.nav-mega-subtitle{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.nav-mega-right{
+  grid-column:2;
+}
+
+.nav-mega-search{
+  width:100%;
+  padding:14px 18px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,0.08);
+  background:#fafafa;
+  outline:none;
+}
+
+.nav-mega-columns{
+  grid-column:1 / span 2;
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.nav-mega-col{
+  padding:14px;
+  border-radius:18px;
+  background:rgba(201,168,76,0.05);
+  border:1px solid rgba(0,0,0,0.05);
+}
+
+.nav-mega-col-title{
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+.nav-mega-links{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.nav-mega-link{
+  padding:10px 12px;
+  border-radius:14px;
+  color:#1d1815;
+  background:transparent;
+  transition:.15s;
+}
+
+.nav-mega-link:hover{
+  background:rgba(201,168,76,0.18);
+}
+
+/* responsive accordion for mobile */
+@media(max-width:1024px){
+  .nav-mega-inner{
+    grid-template-columns:1fr;
+    padding:18px 22px;
+  }
+  .nav-mega-right{grid-column:auto;}
+  .nav-mega-columns{
+    grid-column:auto;
+    grid-template-columns:1fr;
+  }
+  .nav-mega-col{background:white;}
+
+  .header-left{
+    display:none;
+  }
+}
+
+/* =========================
    HERO
 ========================= */
 
@@ -477,10 +600,11 @@ button{
 }
 
 .product-img{
-  height:340px;
+  height:300px;
   position:relative;
   overflow:hidden;
 }
+
 
 .product-img::after{
   content:"";
@@ -655,15 +779,24 @@ button{
 
 .why-inner{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:70px;
+  grid-template-columns:1fr;
+  gap:34px;
 }
+
+/* remove extra height by stacking features under heading */
+.why-features{
+  grid-column:1;
+  grid-template-columns:repeat(2,1fr);
+}
+
+
 
 .why-features{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:24px;
 }
+
 
 .why-card{
   background:white;
@@ -816,13 +949,14 @@ button{
 
 @media(max-width:1024px){
 
-  .header-inner{
-    height:76px;
-    padding:0 24px;
+  .why-inner{
+    grid-template-columns:1fr;
   }
 
-  .header-left{
-    display:none;
+  .header-inner{
+
+    height:76px;
+    padding:0 24px;
   }
 
   .desktop-links{
@@ -931,3 +1065,4 @@ button{
   }
 
 }
+
